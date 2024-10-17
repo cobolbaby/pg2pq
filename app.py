@@ -92,8 +92,8 @@ try:
 
             # Conditionally upload to MinIO if enabled
             if MINIO_ENABLED:
-                minio_client.fput_object(MINIO_BUCKET, f"{POSTGRES_INSTANCE}/{POSTGRES_SCHEMA}/{table_name}/{table_dump_filename}", table_dump_file)
-                print(f" Uploaded to MinIO: {MINIO_BUCKET}/{POSTGRES_INSTANCE}/{POSTGRES_SCHEMA}/{table_name}/{table_dump_filename}", end='', flush=True)
+                minio_client.fput_object(MINIO_BUCKET, f"{POSTGRES_INSTANCE}/{POSTGRES_DB}/{POSTGRES_SCHEMA}/{table_name}/{table_dump_filename}", table_dump_file)
+                print(f" Uploaded to MinIO: {MINIO_BUCKET}/{POSTGRES_INSTANCE}/{POSTGRES_DB}/{POSTGRES_SCHEMA}/{table_name}/{table_dump_filename}", end='', flush=True)
 
             duration = time.time() - start_time
             print(f" done. (Duration: {duration:.2f} seconds)", flush=True)
