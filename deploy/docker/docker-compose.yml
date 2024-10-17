@@ -1,0 +1,12 @@
+services:
+  postgres:
+    image: tfmv/pg2pq:latest
+    container_name: pg2parquet
+    volumes:
+      - /data/pg2parquet/:/mnt/gcs
+    env_file: .env
+
+networks:
+  default:
+    external: true
+    name: infra
