@@ -1,5 +1,3 @@
-fastapi
-uvicorn
 duckdb
-pyarrow
 python-dotenv
+minio
