@@ -42,7 +42,7 @@ try:
     print(" done.", flush=True)
 
     # Define PostgreSQL connection string
-    postgres_conn_str = f"host={POSTGRES_HOST} port={POSTGRES_PORT} dbname={POSTGRES_DB} user={POSTGRES_USER} password={POSTGRES_PASSWORD}"
+    postgres_conn_str = f"host={POSTGRES_HOST} port={POSTGRES_PORT} dbname={POSTGRES_DB} user={POSTGRES_USER} password={POSTGRES_PASSWORD} options=-c%20statement_timeout%3D1200000"
     
     # Attach PostgreSQL database
     print(f"Attaching PostgreSQL database {POSTGRES_DB}...", end='', flush=True)
@@ -80,8 +80,9 @@ try:
             os.makedirs(table_path)
 
         # 按照快照时间定义文件名称
-        snapshot_time = datetime.now().strftime("%Y%m%d%H%M%S")
-        table_dump_filename = f"{snapshot_time}-full.parquet"
+        # snapshot_time = datetime.now().strftime("%Y%m%d%H%M%S")
+        # table_dump_filename = f"{snapshot_time}-full.parquet"
+        table_dump_filename = f"{table_name}-full.parquet"
         table_dump_file = os.path.join(table_path, table_dump_filename)
 
         try:
@@ -92,8 +93,8 @@ try:
 
             # Conditionally upload to MinIO if enabled
             if MINIO_ENABLED:
-                minio_client.fput_object(MINIO_BUCKET, f"{POSTGRES_INSTANCE}/{POSTGRES_DB}/{POSTGRES_SCHEMA}/{table_name}/{table_dump_filename}", table_dump_file)
-                print(f" Uploaded to MinIO: {MINIO_BUCKET}/{POSTGRES_INSTANCE}/{POSTGRES_DB}/{POSTGRES_SCHEMA}/{table_name}/{table_dump_filename}", end='', flush=True)
+                minio_client.fput_object(MINIO_BUCKET, f"BDC/{POSTGRES_INSTANCE}/{POSTGRES_DB}/{POSTGRES_SCHEMA}/{table_name}/{table_dump_filename}", table_dump_file)
+                print(f" Uploaded to MinIO: {MINIO_BUCKET}/BDC/{POSTGRES_INSTANCE}/{POSTGRES_DB}/{POSTGRES_SCHEMA}/{table_name}/{table_dump_filename}", end='', flush=True)
 
             duration = time.time() - start_time
             print(f" done. (Duration: {duration:.2f} seconds)", flush=True)
